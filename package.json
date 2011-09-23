@@ -1,0 +1,11 @@
+{
+  "name": "logger",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "express": "2.4.3",
+    "jade": "0.13.0",
+    "mongoose": "2.0"
+  },
+  "engine": "node >= 0.4.1"
+}

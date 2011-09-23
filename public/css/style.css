@@ -1,0 +1,5 @@
+body { font-family: sans-serif; color: #333; }
+table { border-collapse: collapse; }
+table, th, td { border: 1px solid #CCC; }
+th, td { padding: 2px; }
+

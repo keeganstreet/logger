@@ -1,0 +1,37 @@
+!!! 5
+html
+  head
+    title JavaScript Error Logger
+    link(rel="stylesheet", href="css/style.css")
+  body
+    h1 JavaScript Error Logger
+    p This is a <i>simple</i> error logger made with NodeJS. When an error is thrown in the front end, we make an HTTP request to the logger and pass in the project name, file name, line number and message as GET parameters. The user agent is sent with the header of the request. A 1x1 pixel GIF image is returned and the error is recorded on the server in a MongoDB.
+    p Here is an example implementation:
+    pre.
+      window.onerror = function(message, file, line) {
+        new Image().src = 'http://logger-keegan.dotcloud.com/log/'
+        + '?project=' + encodeURIComponent('test101')
+        + '&file=' + encodeURIComponent(file)
+        + '&line=' + encodeURIComponent(line)
+        + '&message=' + encodeURIComponent(message);
+      };
+    p
+      | This service is really basic at the moment, but is a work in progress. It is open source and on GitHub at: 
+      a(href="https://github.com/keeganstreet/logger", target="_blank") https://github.com/keeganstreet/logger
+    table
+      tr
+        th Date
+        th Project
+        th File
+        th Line
+        th Message
+        th User Agent
+      - each entry in collection
+        tr
+          td= entry.date.toString()
+          td= entry.project
+          td= entry.file
+          td= entry.line
+          td= entry.message
+          td= entry.userAgent
+
