@@ -4,8 +4,10 @@
 var config = require('./config.js'),
   express = require('express'),
   http = require('http'),
-  fs = require("fs"),
+  fs = require('fs'),
   mongoose = require('mongoose'),
+  shSyntaxHighlighter = require('./lib/shCore').SyntaxHighlighter,
+  shJScript = require('./lib/shBrushJScript').Brush,
   Schema = mongoose.Schema,
   ObjectId = Schema.ObjectId,
   imgLog = fs.readFileSync('./public/log.gif'),
@@ -51,14 +53,29 @@ app.configure('production', function() {
 // Routes
 
 app.get('/', function(req, res) {
+  var code = "\n\
+    window.onerror = function(message, file, line) {\n\
+      new Image().src = 'http://logger-keegan.dotcloud.com/log/'\n\
+      + '?project=' + encodeURIComponent('test101')\n\
+      + '&windowLocation=' + encodeURIComponent(window.location.protocol + '//' + window.location.host + window.location.pathname)\n\
+      + '&file=' + encodeURIComponent(file)\n\
+      + '&line=' + encodeURIComponent(line)\n\
+      + '&message=' + encodeURIComponent(message);\n\
+    };\n\
+    ";
+
+  var brush = new shJScript();
+  brush.init({ toolbar: false });
   LogEntryModel.find().desc('date').run(function (err, entries) {
-    res.render('index', { collection: entries });
+    res.render('index', {
+      example1: brush.getHtml(code),
+      collection: entries
+    });
   });
 });
 
 app.get('/log/', function(req, res) {
   if (req.query.project && req.query.file && req.query.line && req.query.message) {
-    console.log(req.query);
     var logEntry = new LogEntryModel({
       date: new Date(),
       project: req.query.project,
