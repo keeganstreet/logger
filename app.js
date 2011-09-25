@@ -12,6 +12,7 @@ var config = require('./config.js'),
   ObjectId = Schema.ObjectId,
   imgLog = fs.readFileSync('./public/log.gif'),
   app,
+  io,
   LogEntry,
   LogEntryModel;
 
@@ -26,6 +27,7 @@ LogEntry = new Schema({
 });
 
 app = module.exports = express.createServer();
+io = require('socket.io').listen(app);
 LogEntryModel = mongoose.model('LogEntryModel', LogEntry);
 
 // Configuration
@@ -88,6 +90,7 @@ app.get('/log/', function(req, res) {
     logEntry.save(function(err){
       if (err) { console.log(err); }
     });
+    io.sockets.emit('update', logEntry);
   }
   res.writeHead(200, {
     'Content-Length': '35',

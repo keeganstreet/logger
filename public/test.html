@@ -8,7 +8,7 @@
 		<a href="#" onclick="return hello = there;">Throw error</a>
 		<script>
 			window.onerror = function(message, file, line) {
-				new Image().src = 'http://localhost:8080/log/'
+				new Image().src = '/log/'
 				+ '?project=' + encodeURIComponent('test101')
 				+ '&windowLocation=' + encodeURIComponent(window.location.protocol + '//' + window.location.host + window.location.pathname)
 				+ '&message=' + encodeURIComponent(message)
