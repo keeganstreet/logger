@@ -1,0 +1,21 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Error log tester</title>
+	</head>
+	<body>
+		<a href="#" onclick="return hello = there;">Throw error</a>
+		<script>
+			window.onerror = function(message, file, line) {
+				new Image().src = 'http://localhost:8080/log/'
+				+ '?project=' + encodeURIComponent('test101')
+				+ '&windowLocation=' + encodeURIComponent(window.location.protocol + '//' + window.location.host + window.location.pathname)
+				+ '&message=' + encodeURIComponent(message)
+				+ '&file=' + encodeURIComponent(file)
+				+ '&line=' + encodeURIComponent(line);
+			};
+		</script>
+	</body>
+</html>
+
