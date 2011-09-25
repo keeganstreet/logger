@@ -16,6 +16,7 @@ var config = require('./config.js'),
 LogEntry = new Schema({
   date: Date,
   project: String,
+  windowLocation: String,
   file: String,
   line: String,
   message: String,
@@ -57,9 +58,11 @@ app.get('/', function(req, res) {
 
 app.get('/log/', function(req, res) {
   if (req.query.project && req.query.file && req.query.line && req.query.message) {
+    console.log(req.query);
     var logEntry = new LogEntryModel({
       date: new Date(),
       project: req.query.project,
+      windowLocation: req.query.windowLocation,
       file: req.query.file,
       line: req.query.line,
       message: req.query.message,
