@@ -5,7 +5,7 @@
 		<title>Error log tester</title>
 	</head>
 	<body>
-		<a href="#" onclick="return hello = there;">Throw error</a>
+		<a href="#" onclick="return hello = throwTestError; return false;">Throw error</a>
 		<script>
 			window.onerror = function(message, file, line) {
 				new Image().src = '/log/'
@@ -14,6 +14,8 @@
 				+ '&message=' + encodeURIComponent(message)
 				+ '&file=' + encodeURIComponent(file)
 				+ '&line=' + encodeURIComponent(line);
+				alert('A JavaScript error was thrown and we have sent this to the error logger.');
+				return true;
 			};
 		</script>
 	</body>
