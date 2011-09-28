@@ -32,7 +32,9 @@ html
             td= entry.file
             td= entry.line
             td= entry.message
-            td= entry.userAgent
+            td
+              = entry.userAgent + " "
+              a(href="http://www.tera-wurfl.com/explore/index.php?ua=" + entry.userAgent, target="_blank") Details
     script(src="//ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js")
     script(src="/socket.io/socket.io.js")
     script(src="/js/logger.js")
