@@ -1,34 +1,16 @@
 /*globals require, module, __dirname */
 
-// Module dependencies.
-var config = require('./config.js'),
-  express = require('express'),
-  http = require('http'),
-  fs = require('fs'),
-  mongoose = require('mongoose'),
-  shSyntaxHighlighter = require('./lib/shCore').SyntaxHighlighter,
-  shJScript = require('./lib/shBrushJScript').Brush,
-  Schema = mongoose.Schema,
-  ObjectId = Schema.ObjectId,
-  imgLog = fs.readFileSync('./public/log.gif'),
-  app,
-  io,
-  LogEntry,
-  LogEntryModel;
+/* This app used to be hosted at DotCloud.
+ * We have moved it to Nodester for socket.io support.
+ * The MongoDB database is still hosted with DotCloud.
+ */
 
-LogEntry = new Schema({
-  date: Date,
-  project: String,
-  windowLocation: String,
-  file: String,
-  line: String,
-  message: String,
-  userAgent: String
-});
+// Module dependencies.
+var express = require('express'),
+  http = require('http'),
+  app;
 
 app = module.exports = express.createServer();
-io = require('socket.io').listen(app);
-LogEntryModel = mongoose.model('LogEntryModel', LogEntry);
 
 // Configuration
 
@@ -44,61 +26,19 @@ app.configure(function() {
 
 app.configure('development', function() {
   app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
-  mongoose.connect('mongodb://localhost/logger');
 });
 
 app.configure('production', function() {
   app.use(express.errorHandler());
-  mongoose.connect(config.DATABASE_URL);
 });
 
 // Routes
 
 app.get('/', function(req, res) {
-  var code = "\n\
-    window.onerror = function(message, file, line) {\n\
-      new Image().src = 'http://logger-keegan.dotcloud.com/log/'\n\
-      + '?project=' + encodeURIComponent('test101')\n\
-      + '&windowLocation=' + encodeURIComponent(window.location.protocol + '//' + window.location.host + window.location.pathname)\n\
-      + '&file=' + encodeURIComponent(file)\n\
-      + '&line=' + encodeURIComponent(line)\n\
-      + '&message=' + encodeURIComponent(message);\n\
-    };\n\
-    ";
-
-  var brush = new shJScript();
-  brush.init({ toolbar: false });
-  LogEntryModel.find().desc('date').run(function (err, entries) {
-    res.render('index', {
-      example1: brush.getHtml(code),
-      collection: entries
-    });
+  res.writeHead(302, {
+	'Location': 'http://logger.nodester.com/'
   });
-});
-
-app.get('/log/', function(req, res) {
-  if (req.query.project && req.query.file && req.query.line && req.query.message) {
-    var logEntry = new LogEntryModel({
-      date: new Date(),
-      project: req.query.project,
-      windowLocation: req.query.windowLocation,
-      file: req.query.file,
-      line: req.query.line,
-      message: req.query.message,
-      userAgent: req.headers['user-agent']
-    });
-    logEntry.save(function(err){
-      if (err) { console.log(err); }
-    });
-    io.sockets.emit('update', logEntry);
-  }
-  res.writeHead(200, {
-    'Content-Length': '35',
-    'Pragma': 'no-cache',
-    'Expires': 'Wed, 19 Apr 2000 11:43:00 GMT',
-    'Content-Type': 'image/gif',
-    'Cache-Control': 'private, no-cache, no-cache=Set-Cookie, proxy-revalidate'});
-  res.end(imgLog, 'binary');
+  res.end();
 });
 
 app.listen(8080);

@@ -5,7 +5,7 @@ html
     link(rel="stylesheet", href="css/style.css")
   body
     h1 JavaScript Error Logger
-    p This is a <i>simple</i> error logger made with NodeJS. When an error is thrown in the front end, we make an HTTP request to the logger and pass in the project name, window location, file name, line number and message as GET parameters. The user agent is sent with the header of the request. A 1x1 pixel GIF image is returned and the error is recorded on the server in a MongoDB. Web sockets are used to push new entries to the table on this page (but the host DotCloud does not currently support web sockets).
+    p This is a <i>simple</i> error logger made with NodeJS. When an error is thrown in the front end, we make an HTTP request to the logger and pass in the project name, window location, file name, line number and message as GET parameters. The user agent is sent with the header of the request. A 1x1 pixel GIF image is returned and the error is recorded on the server in a MongoDB. Web sockets are used to push new entries to the table on this page.
     p
       a(href="test.html", target="_blank") Test throwing an error here.
       |  Here is an example implementation:

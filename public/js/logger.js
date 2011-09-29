@@ -1,5 +1,5 @@
 var logger = (function(module) {
-  var socket = io.connect('http://logger-keegan.dotcloud.com'),
+  var socket = io.connect('http://logger.nodester.com'),
     $logs = $('#logs tbody');
 
   socket.on('update', function (entry) {
