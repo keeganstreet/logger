@@ -100,6 +100,6 @@ app.get('/log/', function(req, res) {
   res.end(imgLog, 'binary');
 });
 
-app.listen(12113);
+app.listen(12118);
 console.log('Express server listening on port %d in %s mode', app.address().port, app.settings.env);
 
