@@ -3,6 +3,24 @@ table { border-collapse: collapse; }
 table, th, td { border: 1px solid #CCC; }
 th, td { padding: 2px; }
 
+#logs { font-size: 11px; padding-top: 20px; }
+.log { clear: both; padding: 10px 0; border-top: 1px solid #CCC; }
+.logSummary { width: 150px; float: left; }
+.logDetails { float: left; }
+.label { float: left; width: 100px; color: #888; text-align: right; padding-right: 5px; }
+.detail { position: relative; padding-left: 100px; }
+.detail:before { width: 95px; position: absolute; left: 0; top: 0; color: #888; text-align: right; }
+.detailWindowLocation:before { content: "Webpage:"; }
+.detailFile:before { content: "Error location:"; }
+.detailMessage:before { content: "Message:"; }
+.detailUserAgent:before { content: "User agent:"; }
+h2 { margin: 0 0 5px; padding: 0; font-size: 14px; }
+p { margin: 0; padding: 0; }
+
+.clearfix:before, .clearfix:after { content: ""; display: table; }
+.clearfix:after { clear: both; }
+.clearfix { zoom: 1; }
+
 .syntaxhighlighter a,
 .syntaxhighlighter div,
 .syntaxhighlighter code,

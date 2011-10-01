@@ -13,28 +13,23 @@ html
     p
       | This service is really basic at the moment, but is a work in progress. It is open source and on GitHub at: 
       a(href="https://github.com/keeganstreet/logger", target="_blank") https://github.com/keeganstreet/logger
-    table#logs
-      thead
-        tr
-          th Date
-          th Project
-          th Window Location
-          th File
-          th Line
-          th Message
-          th User Agent
-      tbody
-        - each entry in collection
-          tr
-            td= entry.date.toString()
-            td= entry.project
-            td= entry.windowLocation
-            td= entry.file
-            td= entry.line
-            td= entry.message
-            td
-              = entry.userAgent + " "
-              a(href="http://www.tera-wurfl.com/explore/index.php?ua=" + entry.userAgent, target="_blank") Details
+    div#logs
+      - each entry in collection
+        .log.clearfix
+          .logSummary
+            h2= entry.project
+            p= entry.date.toDateString() + " " + entry.date.toLocaleTimeString()
+          .logDetails
+            .detail.detailWindowLocation
+              - if (entry.windowLocation)
+                a(href=entry.windowLocation, target="_blank")= entry.windowLocation
+              - else 
+                &nbsp;
+            .detail.detailFile= entry.file + " line " + entry.line
+            .detail.detailMessage= entry.message || "&nbsp;"
+            .detail.detailUserAgent
+              a(href="http://www.tera-wurfl.com/explore/index.php?ua=" + entry.userAgent, target="_blank")= entry.userAgent
+
     script(src="//ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js")
     script(src="/socket.io/socket.io.js")
     script(src="/js/logger.js")
