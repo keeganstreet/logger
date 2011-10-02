@@ -2,7 +2,8 @@
 html
   head
     title JavaScript Error Logger
-    link(rel="stylesheet", href="css/style.css")
+    link(rel="stylesheet", href="/css/style.css")
+    script(src="/js/modernizr-1.7.min.js")
   body
     h1 JavaScript Error Logger
     #introduction
@@ -15,7 +16,7 @@ html
         | This service is really basic at the moment, but is a work in progress. It is open source and on GitHub at: 
         a(href="https://github.com/keeganstreet/logger", target="_blank") https://github.com/keeganstreet/logger
     div
-      span#toggleIntro Hide introduction
+      span#toggleIntro Show introduction
     div#logs
       - each entry in collection
         .log.clearfix
