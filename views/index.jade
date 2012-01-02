@@ -20,7 +20,7 @@ html
         | This service is really basic at the moment, but is a work in progress. It is open source and on GitHub at: 
         a(href="https://github.com/keeganstreet/logger", target="_blank") https://github.com/keeganstreet/logger
     form#formFilter(action="/", method="get")
-      input#inputFilter(type="text", name="p", placeholder="Filter by project", value=projectFilter)
+      input#inputFilter(type="text", name="p", placeholder="Filter by project", value=projectFilter, title="Enter a regular expression or string to filter by project")
     div#logs
       - each entry in collection
         .log.clearfix

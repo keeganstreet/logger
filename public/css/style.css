@@ -226,7 +226,20 @@ p { margin: 0 0 1em; padding: 0; }
 #inputFilter { font-size: 18px; }
 
 #logs { font-size: 11px; }
-.log { clear: both; padding: 10px 0; border-top: 1px solid #CCC; }
+.log {
+  clear: both; padding: 10px 0; border-top: 1px solid #CCC; background: #FFF;
+  -webkit-transition: background 500ms ease-in-out;
+  -moz-transition: background 500ms ease-in-out;
+  -o-transition: background 500ms ease-in-out;
+  -ms-transition: background 500ms ease-in-out;
+  transition: background 500ms ease-in-out;
+  -webkit-transition-delay: 2s;
+  -moz-transition-delay: 2s;
+  -o-transition-delay: 2s;
+  -ms-transition-delay: 2s;
+  transition-delay: 2s;
+}
+.newLog { background: #FFFBCC; }
 .logSummary { width: 150px; float: left; }
 .logDetails { float: left; }
 .label { float: left; width: 100px; color: #888; text-align: right; padding-right: 5px; }

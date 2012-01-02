@@ -51,6 +51,15 @@ app.configure('production', function() {
   mongoose.connect(process.env.DATABASE_URL);
 });
 
+// Sockets
+
+io.set('log level', 1);
+io.sockets.on('connection', function(socket) {
+  socket.on('setProjectFilter', function(value) {
+    socket.set('projectFilter', value);
+  });
+});
+
 // Routes
 
 app.get('/', function(req, res) {
@@ -69,7 +78,12 @@ app.get('/', function(req, res) {
     brush = new shJScript();
 
   if (projectFilter) {
-    filters = { "project": new RegExp(projectFilter) };
+    // Try to use the input as a RegExp, otherwise just treat it as a string
+    try {
+      filters = { 'project': new RegExp(projectFilter) };
+    } catch(e) {
+      filters = { 'project': projectFilter };
+    }
   }
 
   brush.init({ toolbar: false });
@@ -82,9 +96,18 @@ app.get('/', function(req, res) {
   });
 });
 
+// Add an entry to the error log
 app.get('/log/', function(req, res) {
+  var logEntry,
+    i,
+    len,
+    clients = io.sockets.clients(),
+    pushToClient,
+    pushToClientIfListening;
+
+  // Save entry to the database
   if (req.query.project && req.query.file && req.query.line && req.query.message) {
-    var logEntry = new LogEntryModel({
+    logEntry = new LogEntryModel({
       date: new Date(),
       project: req.query.project,
       windowLocation: req.query.windowLocation,
@@ -93,11 +116,37 @@ app.get('/log/', function(req, res) {
       message: req.query.message,
       userAgent: req.headers['user-agent']
     });
-    logEntry.save(function(err){
+    logEntry.save(function(err) {
       if (err) { console.log(err); }
     });
-    io.sockets.emit('update', logEntry);
+
+    // Push the update to clients who are listening to this project
+    pushToClient = function(client) {
+      client.emit('update', logEntry);
+    };
+    pushToClientIfListening = function(client) {
+      client.get('projectFilter', function(err, value) {
+        if (!value || value === req.query.project) {
+          pushToClient(client);
+        } else {
+          try {
+            if (new RegExp(value).test(req.query.project)) {
+              pushToClient(client);
+            }
+          } catch(e) {
+            if (req.query.project.indexOf(value) !== -1) {
+              pushToClient(client);
+            }
+          }
+        }
+      });
+    };
+    for (i = 0, len = clients.length; i < len; i += 1) {
+      pushToClientIfListening(clients[i]);
+    }
   }
+
+  // Send a GIF image as a response
   res.writeHead(200, {
     'Content-Length': '35',
     'Pragma': 'no-cache',
