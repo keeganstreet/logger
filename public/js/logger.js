@@ -1,7 +1,7 @@
 /*global Modernizr, io */
 
 var logger = (function(module) {
-  var socket = io.connect('http://logger.nodester.com'),
+  var socket,
     $logs = $('#logs tbody'),
     introVisible = true,
     $intro = $('#introduction'),
@@ -20,10 +20,13 @@ var logger = (function(module) {
   }
 
   // Update the log list when we get a web socket
-  socket.on('update', function (entry) {
-    var $row = $('<tr><td>' + entry.date.toString() + '</td><td>' + entry.project + '</td><td>' + entry.windowLocation + '</td><td>' + entry.file + '</td><td>' + entry.line + '</td><td>' + entry.message + '</td><td>' + entry.userAgent + '</td></tr>');
-    $logs.prepend($row);
-  });
+  if (Modernizr.websockets) {
+    socket = io.connect('http://logger.nodester.com');
+    socket.on('update', function (entry) {
+      var $row = $('<tr><td>' + entry.date.toString() + '</td><td>' + entry.project + '</td><td>' + entry.windowLocation + '</td><td>' + entry.file + '</td><td>' + entry.line + '</td><td>' + entry.message + '</td><td>' + entry.userAgent + '</td></tr>');
+      $logs.prepend($row);
+    });
+  }
 
   $toggleIntro.click(function(e) {
     e.preventDefault();
