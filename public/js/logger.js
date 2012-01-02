@@ -1,11 +1,14 @@
-/*global Modernizr, io */
+/*global Modernizr, io, history */
 
 var logger = (function(module) {
   var socket,
-    $logs = $('#logs tbody'),
+    $logs = $('#logs'),
     introVisible = true,
     $intro = $('#introduction'),
-    $toggleIntro = $('#toggleIntro');
+    $toggleIntro = $('#toggleIntro'),
+    $formFilter = $('#formFilter'),
+    $inputFilter = $('#inputFilter'),
+    timeOfLastFilterAjax;
 
   // Retrieve previous state of the introduction
   if (Modernizr.localstorage && typeof localStorage.introVisible !== 'undefined') {
@@ -23,11 +26,14 @@ var logger = (function(module) {
   if (Modernizr.websockets) {
     socket = io.connect('http://logger.nodester.com');
     socket.on('update', function (entry) {
-      var $row = $('<tr><td>' + entry.date.toString() + '</td><td>' + entry.project + '</td><td>' + entry.windowLocation + '</td><td>' + entry.file + '</td><td>' + entry.line + '</td><td>' + entry.message + '</td><td>' + entry.userAgent + '</td></tr>');
-      $logs.prepend($row);
+      var $log = $('<div class="log clearfix"></div>')
+        .append($('<div class="logSummary"><h2>' + entry.project + '</h2><p>' + entry.date.toString() + '</p></div>'))
+        .append($('<div class="logDetails"><div class="detail detailWindowLocation"><a href="' + encodeURI(entry.windowLocation) + '" target="_blank">' + entry.windowLocation + '</a></div><div class="detail detailFile">' + entry.file + ' line ' + entry.line + '</div><div class="detail detailMessage">' + entry.message + '</div><div class="detail detailUserAgent"><a href="http://www.tera-wurfl.com/explore/index.php?ua=' + encodeURIComponent(entry.userAgent) + '" target="_blank">' + entry.userAgent + '</a></div></div>'));
+      $logs.prepend($log);
     });
   }
 
+  // Show/hide the introduction
   $toggleIntro.click(function(e) {
     e.preventDefault();
     if (introVisible) {
@@ -43,6 +49,35 @@ var logger = (function(module) {
       localStorage.introVisible = introVisible;
     }
   });
+
+  // Use Ajax for project filtering
+  if (Modernizr.history) {
+    $inputFilter.keyup(function(e) {
+      $formFilter.submit();
+    });
+    $formFilter.submit(function(e) {
+      e.preventDefault();
+      var newUrl = window.location.protocol + '//' + window.location.hostname + (window.location.port ? ':' + window.location.port : '') + window.location.pathname,
+        val = $inputFilter.val(),
+        timeOfThisFilterAjax;
+
+      if (val !== '') {
+        newUrl += '?p=' + encodeURIComponent(val);
+      }
+
+      timeOfThisFilterAjax = timeOfLastFilterAjax = new Date();
+      $.get($formFilter.attr('action'), $formFilter.serialize(), function(data) {
+        var $newPage;
+        // Only process this reponse if it is the most recent Ajax request
+        if (timeOfThisFilterAjax === timeOfLastFilterAjax) {
+          $newPage = $(data);
+          $logs.empty().append($(data).find('.log'));
+        }
+      });
+
+      history.pushState(null, null, newUrl);
+    });
+  }
 
   return module;
 }(logger || {}));
