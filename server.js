@@ -63,14 +63,21 @@ app.get('/', function(req, res) {
       + '&amp;line=' + encodeURIComponent(line)\n\
       + '&amp;message=' + encodeURIComponent(message);\n\
     };\n\
-    ";
+    ",
+    projectFilter = req.query.p || '',
+    filters,
+    brush = new shJScript();
 
-  var brush = new shJScript();
+  if (projectFilter) {
+    filters = { "project": new RegExp(projectFilter) };
+  }
+
   brush.init({ toolbar: false });
-  LogEntryModel.find().desc('date').run(function (err, entries) {
+  LogEntryModel.find(filters).desc('date').run(function (err, entries) {
     res.render('index', {
       example1: brush.getHtml(code),
-      collection: entries
+      collection: entries,
+      projectFilter: req.query.p || ''
     });
   });
 });

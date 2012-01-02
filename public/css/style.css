@@ -222,6 +222,9 @@ p { margin: 0 0 1em; padding: 0; }
 #toggleIntro.show .show { display: block; }
 #toggleIntro.hide .hide { display: block; }
 
+#formfilter { margin-bottom: 1em; }
+#filter { font-size: 18px; }
+
 #logs { font-size: 11px; }
 .log { clear: both; padding: 10px 0; border-top: 1px solid #CCC; }
 .logSummary { width: 150px; float: left; }

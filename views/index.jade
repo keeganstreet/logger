@@ -19,6 +19,8 @@ html
       p
         | This service is really basic at the moment, but is a work in progress. It is open source and on GitHub at: 
         a(href="https://github.com/keeganstreet/logger", target="_blank") https://github.com/keeganstreet/logger
+    form#formfilter(action="/", method="get")
+      input#filter(type="text", name="p", placeholder="Filter by project", value=projectFilter)
     div#logs
       - each entry in collection
         .log.clearfix
