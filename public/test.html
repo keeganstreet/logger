@@ -5,7 +5,7 @@
 		<title>Error log tester</title>
 	</head>
 	<body>
-		<a href="#" onclick="return hello = throwTestError; return false;">Throw error</a>
+		<a href="test.html" onclick="return hello = throwTestError; return false;">Throw error</a>
 		<script>
 			window.onerror = function(message, file, line) {
 				new Image().src = '/log/'
