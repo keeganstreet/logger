@@ -218,9 +218,11 @@ p { margin: 0 0 1em; padding: 0; }
 /* Introduction panel */
 #introduction { display: none; }
 
-#toggleIntro { background: #999; color: #FFF; border-radius: 5px; padding: 2px 4px; cursor: pointer; }
+#toggleIntro div { float: right; display: none; background: #999; color: #FFF; border-radius: 5px; padding: 2px 4px; cursor: pointer; }
+#toggleIntro.show .show { display: block; }
+#toggleIntro.hide .hide { display: block; }
 
-#logs { font-size: 11px; padding-top: 20px; }
+#logs { font-size: 11px; }
 .log { clear: both; padding: 10px 0; border-top: 1px solid #CCC; }
 .logSummary { width: 150px; float: left; }
 .logDetails { float: left; }

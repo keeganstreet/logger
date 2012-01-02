@@ -5,6 +5,9 @@ html
     link(rel="stylesheet", href="/css/style.css")
     script(src="/js/modernizr-1.7.min.js")
   body
+    div#toggleIntro
+      .show Show introduction
+      .hide Hide introduction
     h1 JavaScript Error Logger
     #introduction
       p This is a <i>simple</i> error logger made with NodeJS. When an error is thrown in the front end, we make an HTTP request to the logger and pass in the project name, window location, file name, line number and message as GET parameters. The user agent is sent with the header of the request. A 1x1 pixel GIF image is returned and the error is recorded on the server in a MongoDB. Web sockets are used to push new entries to the table on this page.
@@ -15,8 +18,6 @@ html
       p
         | This service is really basic at the moment, but is a work in progress. It is open source and on GitHub at: 
         a(href="https://github.com/keeganstreet/logger", target="_blank") https://github.com/keeganstreet/logger
-    div
-      span#toggleIntro Show introduction
     div#logs
       - each entry in collection
         .log.clearfix

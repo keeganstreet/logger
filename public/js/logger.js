@@ -13,10 +13,10 @@ var logger = (function(module) {
   }
   if (introVisible) {
     $intro.show();
-    $toggleIntro.text('Hide introduction');
+    $toggleIntro.removeClass('show').addClass('hide');
   } else {
     $intro.hide();
-    $toggleIntro.text('Show introduction');
+    $toggleIntro.removeClass('hide').addClass('show');
   }
 
   // Update the log list when we get a web socket
@@ -30,11 +30,11 @@ var logger = (function(module) {
     if (introVisible) {
       introVisible = false;
       $intro.slideUp();
-      $toggleIntro.text('Show introduction');
+      $toggleIntro.removeClass('hide').addClass('show');
     } else {
       introVisible = true;
       $intro.slideDown();
-      $toggleIntro.text('Hide introduction');
+      $toggleIntro.removeClass('show').addClass('hide');
     }
     if (Modernizr.localstorage) {
       localStorage.introVisible = introVisible;
