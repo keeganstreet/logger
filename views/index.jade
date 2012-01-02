@@ -1,6 +1,7 @@
 !!! 5
 html
   head
+    meta(charset="utf-8")
     title JavaScript Error Logger
     link(rel="stylesheet", href="/css/style.css")
     script(src="/js/modernizr.custom.86195.js")
@@ -27,13 +28,13 @@ html
           .logDetails
             .detail.detailWindowLocation
               - if (entry.windowLocation)
-                a(href=entry.windowLocation, target="_blank")= entry.windowLocation
+                a(href=encodeURI(entry.windowLocation), target="_blank")= entry.windowLocation
               - else 
                 &nbsp;
             .detail.detailFile= entry.file + " line " + entry.line
             .detail.detailMessage= entry.message || "&nbsp;"
             .detail.detailUserAgent
-              a(href="http://www.tera-wurfl.com/explore/index.php?ua=" + entry.userAgent, target="_blank")= entry.userAgent
+              a(href="http://www.tera-wurfl.com/explore/index.php?ua=" + encodeURIComponent(entry.userAgent), target="_blank")= entry.userAgent
 
     script(src="/js/jquery-1.7.1.min.js")
     script(src="/socket.io/socket.io.js")

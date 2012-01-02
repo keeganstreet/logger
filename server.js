@@ -58,10 +58,10 @@ app.get('/', function(req, res) {
     window.onerror = function(message, file, line) {\n\
       new Image().src = 'http://logger.nodester.com/log/'\n\
       + '?project=' + encodeURIComponent('test101')\n\
-      + '&windowLocation=' + encodeURIComponent(window.location.protocol + '//' + window.location.host + window.location.pathname)\n\
-      + '&file=' + encodeURIComponent(file)\n\
-      + '&line=' + encodeURIComponent(line)\n\
-      + '&message=' + encodeURIComponent(message);\n\
+      + '&amp;windowLocation=' + encodeURIComponent(window.location.protocol + '//' + window.location.host + window.location.pathname)\n\
+      + '&amp;file=' + encodeURIComponent(file)\n\
+      + '&amp;line=' + encodeURIComponent(line)\n\
+      + '&amp;message=' + encodeURIComponent(message);\n\
     };\n\
     ";
 
