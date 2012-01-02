@@ -1,12 +1,12 @@
 {
   "name": "logger",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "private": true,
   "dependencies": {
-    "express": "2.4.3",
-    "jade": "0.13.0",
-    "mongoose": "2.0",
-    "socket.io": "0.8.4"
+    "express": "2.5.3",
+    "jade": "0.20.0",
+    "mongoose": "2.4.8",
+    "socket.io": "0.8.7"
   },
-  "engine": "node >= 0.4.1"
+  "engine": "node >= 0.4.9"
 }
