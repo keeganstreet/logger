@@ -74,9 +74,25 @@ var logger = (function(module) {
     });
     $formFilter.submit(function(e) {
       e.preventDefault();
+
       var newUrl = window.location.protocol + '//' + window.location.hostname + (window.location.port ? ':' + window.location.port : '') + window.location.pathname,
         val = $inputFilter.val(),
         timeOfThisFilterAjax;
+
+      // Filter the existing log items on the page immediately, while waiting on the Ajax response
+      $logs.find('log').filter(function(index) {
+        var logItemProjectName = $(this).find('h2').text();
+        try {
+          if (new RegExp(val).test(logItemProjectName)) {
+            return false;
+          }
+        } catch(e) {
+          if (logItemProjectName.indexOf(val) !== -1) {
+            return false;
+          }
+        }
+        return true;
+      }).hide();
 
       if (val !== '') {
         newUrl += '?p=' + encodeURIComponent(val);
