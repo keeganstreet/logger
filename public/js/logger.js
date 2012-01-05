@@ -80,19 +80,21 @@ var logger = (function(module) {
         timeOfThisFilterAjax;
 
       // Filter the existing log items on the page immediately, while waiting on the Ajax response
-      $logs.find('.log').filter(function(index) {
+      $logs.find('.log').each(function(index) {
         var logItemProjectName = $(this).find('h2').text();
         try {
           if (new RegExp(val).test(logItemProjectName)) {
-            return false;
+            $(this).show();
+            return;
           }
         } catch(e) {
           if (logItemProjectName.indexOf(val) !== -1) {
-            return false;
+            $(this).show();
+            return;
           }
         }
-        return true;
-      }).hide();
+        $(this).hide();
+      });
 
       if (val !== '') {
         newUrl += '?p=' + encodeURIComponent(val);
