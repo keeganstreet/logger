@@ -80,7 +80,7 @@ var logger = (function(module) {
         timeOfThisFilterAjax;
 
       // Filter the existing log items on the page immediately, while waiting on the Ajax response
-      $logs.find('log').filter(function(index) {
+      $logs.find('.log').filter(function(index) {
         var logItemProjectName = $(this).find('h2').text();
         try {
           if (new RegExp(val).test(logItemProjectName)) {
